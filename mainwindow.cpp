@@ -10,13 +10,16 @@
 int count = 0;
 int graph_page = 0;
 
-Mainwindow::Mainwindow(QWidget *parent) :
-        QWidget(parent), ui(new Ui::Mainwindow) {
+enum page_table {brakes_general = 0,brakes_bias_cone = 6, susp_positions = 1,
+            susp_hist = 2, tuning = 3, gps = 4};
+
+main_window::main_window(QWidget *parent) :
+        QWidget(parent), ui(new Ui::main_window) {
     ui->setupUi(this);
 
     //connect signals to slots
     connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(set_page_to_brake_bias_cone()));
-    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(print_int(int)));
+    connect(ui->outing_combobox, SIGNAL(currentIndexChanged(int)), this, SLOT(print_int(int)));
     connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(set_page_to_brake_general()));
     connect(ui->pushButton_6, SIGNAL(clicked()), this, SLOT(set_page_to_susp_pos()));
 
@@ -60,9 +63,8 @@ Mainwindow::Mainwindow(QWidget *parent) :
     third_X->append(categories);
     third_chart->addAxis(third_X, Qt::AlignBottom);
     my_bar->attachAxis(third_X);
-
     third_chart->addAxis(third_y, Qt::AlignLeft);
-    my_bar->attachAxis(third_X);
+    my_bar->attachAxis(third_y);
 
 
 
@@ -72,7 +74,7 @@ Mainwindow::Mainwindow(QWidget *parent) :
 
 }
 
-void Mainwindow::on_pushButton_clicked(){
+void main_window::on_pushButton_clicked(){
     QThread *my_thread = QThread::create([this] {
         while (true) {
             this->first_line->append(count, (count * count) + (2 * count) + 6);
@@ -94,42 +96,59 @@ void Mainwindow::on_pushButton_clicked(){
     }
 
 
-void Mainwindow::on_pushButton_2_clicked(){
+void main_window::on_pushButton_2_clicked(){
     graph_page += 1;
     ui->chart_one->setChart(my_charts[graph_page % 3]);
 }
 
-void Mainwindow::on_pushButton_3_clicked(){
+void main_window::on_pushButton_3_clicked(){
     graph_page -= 1;
     ui->chart_one->setChart(my_charts[graph_page % 3]);
 
 }
-void Mainwindow::on_pushButton_4_clicked(){
-    ui->stackedWidget->setCurrentIndex(0);
+void main_window::on_pushButton_4_clicked(){
+    ui->plot_container->setCurrentIndex(0);
 
 }
-void Mainwindow::set_page_to_brake_bias_cone(){
-    ui->stackedWidget->setCurrentIndex(5);
+void main_window::set_page_to_brake_bias_cone(){
+    ui->plot_container->setCurrentIndex(brakes_bias_cone);
     qInfo("lol");
 
 }
-void Mainwindow::print_int(int index) {
+void main_window::print_int(int index) {
     qInfo() << std::to_string(index);
 }
 
-void Mainwindow::set_page_to_brake_general() {
-    ui->stackedWidget->setCurrentIndex(0);
+void main_window::set_page_to_brake_general() {
+    ui->plot_container->setCurrentIndex(brakes_general);
     qInfo("lol");
 
 }
 
-void Mainwindow::set_page_to_susp_pos() {
-    ui->stackedWidget->setCurrentIndex(1);
+void main_window::set_page_to_susp_pos() {
+    ui->plot_container->setCurrentIndex(susp_positions);
     qInfo("lol");
 
 }
 
 
-Mainwindow::~Mainwindow() {
+void main_window::set_page_to_susp_his() {
+    ui->plot_container->setCurrentIndex(2);
+    qInfo("lol");
+
+}
+void main_window::set_page_to_tuning() {
+    ui->plot_container->setCurrentIndex(1);
+    qInfo("lol");
+
+}
+void main_window::set_page_to_gps() {
+    ui->plot_container->setCurrentIndex(3);
+    qInfo("lol");
+
+}
+
+
+main_window::~main_window() {
     delete ui;
 }

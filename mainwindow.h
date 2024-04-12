@@ -20,15 +20,15 @@
 #include <chrono>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class Mainwindow; }
+namespace Ui { class main_window; }
 QT_END_NAMESPACE
 
-class Mainwindow : public QWidget {
+class main_window : public QWidget {
 Q_OBJECT
 
 
 public:
-    explicit Mainwindow(QWidget *parent = nullptr);
+    explicit main_window(QWidget *parent = nullptr);
     QLineSeries *first_line =  new QLineSeries();
     QChart *mychart = new QChart();
     QValueAxis *axisX = new QValueAxis();
@@ -47,10 +47,10 @@ public:
     QChart *my_charts[3] = {mychart, second_chart,third_chart };
 
 
-    ~Mainwindow() override;
+    ~main_window() override;
 
 private:
-    Ui::Mainwindow *ui;
+    Ui::main_window *ui;
 
 public slots:
     void on_pushButton_clicked();
@@ -61,6 +61,10 @@ public slots:
     void print_int(int index);
     void set_page_to_brake_general();
     void set_page_to_susp_pos();
+    void set_page_to_susp_his();
+    void set_page_to_tuning();
+    void set_page_to_gps();
+
 
 };
 
