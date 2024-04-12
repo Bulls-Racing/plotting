@@ -13,6 +13,15 @@ int graph_page = 0;
 Mainwindow::Mainwindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::Mainwindow) {
     ui->setupUi(this);
+
+    //connect signals to slots
+    connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(set_page_to_brake_bias_cone()));
+    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(print_int(int)));
+    connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(set_page_to_brake_general()));
+    connect(ui->pushButton_6, SIGNAL(clicked()), this, SLOT(set_page_to_susp_pos()));
+
+
+
     //setting up time series chart
     mychart->addSeries(first_line);
     mychart->setTitle("This is a line series chart");
@@ -66,9 +75,9 @@ Mainwindow::Mainwindow(QWidget *parent) :
 void Mainwindow::on_pushButton_clicked(){
     QThread *my_thread = QThread::create([this] {
         while (true) {
-            this->first_line->append(count, count);
+            this->first_line->append(count, (count * count) + (2 * count) + 6);
             axisX->setMax(count + 1);
-            axisY->setMax(count + 1);
+            axisY->setMax((count * count) + (2 * count) + 6);
             qInfo("");
             count++;
             if (count > 5){
@@ -95,6 +104,31 @@ void Mainwindow::on_pushButton_3_clicked(){
     ui->chart_one->setChart(my_charts[graph_page % 3]);
 
 }
+void Mainwindow::on_pushButton_4_clicked(){
+    ui->stackedWidget->setCurrentIndex(0);
+
+}
+void Mainwindow::set_page_to_brake_bias_cone(){
+    ui->stackedWidget->setCurrentIndex(5);
+    qInfo("lol");
+
+}
+void Mainwindow::print_int(int index) {
+    qInfo() << std::to_string(index);
+}
+
+void Mainwindow::set_page_to_brake_general() {
+    ui->stackedWidget->setCurrentIndex(0);
+    qInfo("lol");
+
+}
+
+void Mainwindow::set_page_to_susp_pos() {
+    ui->stackedWidget->setCurrentIndex(1);
+    qInfo("lol");
+
+}
+
 
 Mainwindow::~Mainwindow() {
     delete ui;

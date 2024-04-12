@@ -52,10 +52,16 @@ public:
 private:
     Ui::Mainwindow *ui;
 
-private slots:
+public slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
+    void set_page_to_brake_bias_cone();
+    void print_int(int index);
+    void set_page_to_brake_general();
+    void set_page_to_susp_pos();
+
 };
 
 
